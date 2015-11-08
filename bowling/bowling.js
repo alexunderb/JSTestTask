@@ -9,7 +9,7 @@ BowlingGame.prototype.roll = function(pins) {
     this.rolls[this.currentRoll++] = pins;
 };
 
-BowlingGame.prototype.score = function(currentIndex) {
+BowlingGame.prototype.score = function(currentFrameIndex) {
     var score = 0;
     var frameIndex = 0;
     var self = this;
@@ -19,18 +19,17 @@ BowlingGame.prototype.score = function(currentIndex) {
     }
 
     function spareBonus() {
-      if(typeof self.rolls[frameIndex + 2] === "undefined")
-        return 0;
-      else
+      if(typeof self.rolls[frameIndex + 2] === "undefined") return 0;
+    
         return self.rolls[frameIndex + 2];
     }
 
     function strikeBonus() {
-        if(typeof self.rolls[frameIndex + 1] === "undefined")
-          return 0;
-        else if(typeof self.rolls[frameIndex + 2] === "undefined")
-          return self.rolls[frameIndex + 1];
-        else return self.rolls[frameIndex + 1] + self.rolls[frameIndex + 2];
+        if((typeof self.rolls[frameIndex + 1] === "undefined") & (typeof self.rolls[frameIndex + 2] === "undefined")) return 0;
+        else
+        if(typeof self.rolls[frameIndex + 2] === "undefined") return self.rolls[frameIndex + 1];
+          
+        return self.rolls[frameIndex + 1] + self.rolls[frameIndex + 2];
     }
 
     function isStrike() {
@@ -38,13 +37,12 @@ BowlingGame.prototype.score = function(currentIndex) {
     }
 
     function isSpare() {
-      if(typeof self.rolls[frameIndex + 1] === "undefined")
-        return self.rolls[frameIndex];
-      else
+      if(typeof self.rolls[frameIndex + 1] === "undefined")  self.rolls[frameIndex+1] = 0;
+      
         return self.rolls[frameIndex] + self.rolls[frameIndex + 1] === 10;
     }
 
-    for (var frame = 0; frame < currentIndex; frame++) {
+    for (var frame = 0; frame < currentFrameIndex; frame++) {
         if (isStrike()) {
             score += 10 + strikeBonus();
             frameIndex++;
@@ -61,7 +59,7 @@ BowlingGame.prototype.score = function(currentIndex) {
 
 var game = new BowlingGame();
 var results = JSON.parse(localStorage.getItem("results")) || [];
-var index = 1;
+var index = 0;
 
 // document ready?
 $(function() {
@@ -141,11 +139,15 @@ $(function() {
 
     // -- Increment frame index --
 
-    if (current_input.is('.second')) {
+    if (current_input.is('.second, .third')) {
       //if (current_input.is('.second, .third')) {
       $(this).append("<div>" + game.score(index) + "</div>");
 
-      index++
+      
+    }
+    if (current_input.is('.first')) {
+      $(this).append("<div>" + game.score(index) + "</div>");
+      ++index;
     }
   });
 
