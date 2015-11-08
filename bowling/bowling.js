@@ -78,7 +78,7 @@ $(function() {
           return true
         };
 
-        // TODO: last row validation
+        //last row
         if ($el.closest('.row').hasClass('last')) {
           return true
         };
@@ -126,24 +126,25 @@ $(function() {
       }
     };
 
-    //// if last row, second roll, and frame score > 10 then enable third input
-    //if (current_input.closest('.row').is('.last, .second') && (+current_input_value + +previous_input_value <= 10)) {
-
-    // show next input
-    $(this).find("input:not(.checked)").first().prop("disabled", false);
-
-    //
-    //if (current_input.closest('.row').is('.last, .third')) {
-    //  $(this).append("<div>" + game.score(index) + "</div>");
-    //};
-
+    // turn on third input in last row
+    if (!current_input.closest('.row').is('.last, .third')) {
+      $(this).find("input:not(.checked)").first().prop("disabled", false);
+   } else if (current_input.is('.second')) {
+        if (/^[Xx]$/.test(current_input_value)) current_input_value = 10;
+        if (/^[/]$/.test(current_input_value)) {
+          current_input_value = 5;
+          previous_input_value = 5;
+        }
+        if (/^[Xx]$/.test(previous_input_value)) previous_input_value = 10;
+        if (+current_input_value + +previous_input_value >= 10) {
+          $(this).find("input:not(.checked)").first().prop("disabled", false);
+        }
+   } else $(this).find("input:not(.checked)").first().prop("disabled", false);
+        
     // -- Increment frame index --
 
     if (current_input.is('.second, .third')) {
-      //if (current_input.is('.second, .third')) {
-      $(this).append("<div>" + game.score(index) + "</div>");
-
-      
+      $(this).append("<div>" + game.score(index) + "</div>");    
     }
     if (current_input.is('.first')) {
       $(this).append("<div>" + game.score(index) + "</div>");
