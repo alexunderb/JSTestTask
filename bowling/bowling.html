@@ -1,0 +1,111 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bowling</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <form class="form-horizontal">
+
+        <!-- 1 -->
+
+        <div class="row">
+          <div class="col-sm-1">
+            <label class="control-label">Frame 1</label>
+          </div>
+
+          <div class="col-sm-1">
+            <div class="form-group">
+
+              <input type="text" class="first form-control" pattern="[Xx0-9]" title="X – strike, 0 to 9 – open" required>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+
+          <div class="col-sm-1">
+            <div class="form-group">
+
+              <input type="text" class="second form-control" pattern="[/0-9]" title="/ - spare, 0 to 9 – open" data-max="10" required disabled>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+
+        <div class="row">
+          <div class="col-sm-1">
+            <label class="control-label">Frame 2</label>
+          </div>
+
+          <div class="col-sm-1">
+            <div class="form-group">
+
+              <input type="text" class="first form-control" pattern="[Xx0-9]" title="X – strike, 0 to 9 – open" required disabled>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+
+          <div class="col-sm-1">
+            <div class="form-group">
+
+              <input type="text" class="second form-control" pattern="[/0-9]" title="/ - spare, 0 to 9 – open" data-max="10" required disabled>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 (Last) -->
+
+        <div class="row last">
+         <div class="col-sm-1">
+           <label class="control-label">Frame 3</label>
+         </div>
+
+         <div class="col-sm-1">
+           <div class="form-group">
+
+             <input type="text" class="first form-control" pattern="[Xx0-9]" title="X – strike, 0 to 9 – open" required disabled>
+             <div class="help-block with-errors"></div>
+           </div>
+         </div>
+
+         <div class="col-sm-1">
+           <div class="form-group">
+
+             <input type="text" class="second form-control" pattern="[Xx/0-9]" title="X - strike, / - spare, 0 to 9 – open" data-max="10" required disabled>
+             <div class="help-block with-errors"></div>
+           </div>
+         </div>
+
+          <div class="col-sm-1">
+            <div class="form-group">
+
+              <input type="text" class="third form-control" pattern="[X0-9]" title="X - strike, 0 to 9 – open" data-max="10" required disabled>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+
+        <div class="row">
+         <div class="form-group">
+           <button type="submit" class="btn btn-primary">New Game</button>
+         </div>
+        </div>
+
+      </form>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap-validator/dist/validator.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bowling.js"></script>
+  </body>
+</html>
