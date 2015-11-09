@@ -61,7 +61,6 @@ var game = new BowlingGame();
 var results = JSON.parse(localStorage.getItem("results")) || [];
 var index = 0;
 
-// document ready?
 $(function() {
   function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -100,14 +99,16 @@ $(function() {
     var currentInputValue = currentInput.val();
     var previousInputValue = currentInput.closest('.row').find('.first').val();
 
+    if (currentInput.hasClass('calculateBest')) {
+      return true;
+    };
+
     // -- Fill bowling object --
 
     if (/^[Xx]$/.test(currentInputValue)) {
       game.roll(10);
       $(this).find(".totalScore").html(game.score(index));
-      //game.roll(0);
     } else if (currentInputValue == '/') {
-      // ERROR: '/', pass exact number, e.g. 5/5
       game.roll(10 - +previousInputValue);
     } else {
       game.roll(+currentInputValue)
@@ -153,11 +154,13 @@ $(function() {
     }
   });
 
+
+
   $('form').on('submit', function() {
     // check local storage support
     if(typeof(Storage) !== "undefined") {
       // save results to local storage
-      results.push(game.score());
+      results.push(game.score(10));
       localStorage.setItem("results", JSON.stringify(results));
     } else {
       alert("Sorry! No Web Storage support..");
@@ -167,12 +170,41 @@ $(function() {
     game = new BowlingGame();
   });
 
-  $('form').find('.calculate').on('click', function(e) {
-    e.preventDefault();
-    $(this).prepend("<div> Top games: " + results.sort.take(3) + "</div>");
-  });
+  
+  $('.calculateBest').on('change', function(e) {
+    var count = $(this).val();
+    var outputResult = "";
 
-  // the most result games
-  // TODO: need to implement sort and take first 3, 5, 10
-  //$(this).prepend("<div> Top games: " + results.sort.take(3) + "</div>");
+    results.sort(function(a,b) {
+        if (a < b) { return 1; }
+        else if (a == b) { return 0; }
+        else { return -1; }
+    });
+
+    switch (count) {
+      case "3":
+        for (var i = 0; i < count; i++) {
+          outputResult += results[i] + " ";
+        }
+        $(".bestResult").html(outputResult);
+        break
+      case "5":
+        for (var i = 0; i < count; i++) {
+          outputResult += results[i] + " ";
+        }
+        $(".bestResult").html(outputResult);
+        break
+      case "10":
+       for (var i = 0; i < count; i++) {
+          outputResult += results[i] + " ";
+        }
+        $(".bestResult").html(outputResult);
+       break;
+    }
+  });
+ 
+});
+
+$(document).ready(function(){
+  $('.calculateBest').trigger('change');
 });

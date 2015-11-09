@@ -269,6 +269,8 @@
              <label class="control-label">Total score: </label>
              <div class="totalScore">0</div>
            </div>
+
+
         </div>
         
 
@@ -277,11 +279,19 @@
         <div class="row">
          <div class="form-group">
            <button type="submit" class="btn btn-primary">New Game</button>
-           <button class="btn btn-primary calculate">3 best results</button>
          </div>
         </div>
-
+<div>Best results</div>
+            <select class="calculateBest">
+              <option selected value ="3">3</option>
+              <option value ="5">5</option>
+              <option value ="10">10</option>
+            </select> 
+         </div>
+        </div>
         
+        <label class="control-label">Best results: </label>
+        <div class="bestResult"></div>
 
       </form>
     </div>
