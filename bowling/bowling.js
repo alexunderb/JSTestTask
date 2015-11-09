@@ -71,10 +71,10 @@ $(function() {
   $('form').validator({
     custom: {
       max: function ($el) {
-        var current_input_value = $el.val();
+        var currentInputValue = $el.val();
 
         // Is current input value not a number?
-        if (!isNumber(current_input_value)) {
+        if (!isNumber(currentInputValue)) {
           return true
         };
 
@@ -83,9 +83,9 @@ $(function() {
           return true
         };
 
-        var previous_input_value = $el.closest('.row').find('.first').val();
+        var previousInputValue = $el.closest('.row').find('.first').val();
 
-        return (+current_input_value + +previous_input_value <= 10)
+        return (+currentInputValue + +previousInputValue <= 10)
       }
     },
     errors: {
@@ -96,58 +96,59 @@ $(function() {
 
   // handle events from validator
   $('form').on('valid.bs.validator', function(event) {
-    var current_input = $(event.relatedTarget);
-    var current_input_value = current_input.val();
-    var previous_input_value = current_input.closest('.row').find('.first').val();
+    var currentInput = $(event.relatedTarget);
+    var currentInputValue = currentInput.val();
+    var previousInputValue = currentInput.closest('.row').find('.first').val();
 
     // -- Fill bowling object --
 
-    if (/^[Xx]$/.test(current_input_value)) {
+    if (/^[Xx]$/.test(currentInputValue)) {
       game.roll(10);
+      $(this).find(".totalScore").html(game.score(index));
       //game.roll(0);
-    } else if (current_input_value == '/') {
+    } else if (currentInputValue == '/') {
       // ERROR: '/', pass exact number, e.g. 5/5
-      game.roll(10 - +previous_input_value);
+      game.roll(10 - +previousInputValue);
     } else {
-      game.roll(+current_input_value)
+      game.roll(+currentInputValue)
     };
 
     // -- Prepare next inputs --
 
     // check and hide current input
-    current_input.addClass("checked").prop("disabled", true);
+    currentInput.addClass("checked").prop("disabled", true);
 
     // is it strike?
-    if (/^[Xx]$/.test(current_input_value)) {
+    if (/^[Xx]$/.test(currentInputValue)) {
       // check next input
       // don't check next input if it is last row
-      if (!current_input.closest('.row').hasClass('last')) {
+      if (!currentInput.closest('.row').hasClass('last')) {
         $(this).find('input:not(.checked)').first().addClass("checked");
       }
     };
 
     // turn on third input in last row
-    if (!current_input.closest('.row').is('.last, .third')) {
+    if (!currentInput.closest('.row').is('.last, .third')) {
       $(this).find("input:not(.checked)").first().prop("disabled", false);
-   } else if (current_input.is('.second')) {
-        if (/^[Xx]$/.test(current_input_value)) current_input_value = 10;
-        if (/^[/]$/.test(current_input_value)) {
-          current_input_value = 5;
-          previous_input_value = 5;
+   } else if (currentInput.is('.second')) {
+        if (/^[Xx]$/.test(currentInputValue)) currentInputValue = 10;
+        if (/^[/]$/.test(currentInputValue)) {
+          currentInputValue = 5;
+          previousInputValue = 5;
         }
-        if (/^[Xx]$/.test(previous_input_value)) previous_input_value = 10;
-        if (+current_input_value + +previous_input_value >= 10) {
+        if (/^[Xx]$/.test(previousInputValue)) previousInputValue = 10;
+        if (+currentInputValue + +previousInputValue >= 10) {
           $(this).find("input:not(.checked)").first().prop("disabled", false);
         }
    } else $(this).find("input:not(.checked)").first().prop("disabled", false);
         
     // -- Increment frame index --
 
-    if (current_input.is('.second, .third')) {
-      $(this).append("<div>" + game.score(index) + "</div>");    
+    if (currentInput.is('.second, .third')) {
+      $(this).find(".totalScore").html(game.score(index));    
     }
-    if (current_input.is('.first')) {
-      $(this).append("<div>" + game.score(index) + "</div>");
+    if (currentInput.is('.first')) {
+      $(this).find(".totalScore").html(game.score(index));
       ++index;
     }
   });
@@ -164,6 +165,11 @@ $(function() {
 
     // New game, reset all inputs
     game = new BowlingGame();
+  });
+
+  $('form').find('.calculate').on('click', function(e) {
+    e.preventDefault();
+    $(this).prepend("<div> Top games: " + results.sort.take(3) + "</div>");
   });
 
   // the most result games

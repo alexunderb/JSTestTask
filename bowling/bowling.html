@@ -6,6 +6,12 @@
     <title>Bowling</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <style>
+      .inline-group label,
+      .inline-group div {
+        display: inline-block;
+      }
+    </style>
   </head>
 
   <body>
@@ -258,15 +264,24 @@
               <div class="help-block with-errors"></div>
             </div>
           </div>
+
+           <div class="col-sm-3 inline-group">
+             <label class="control-label">Total score: </label>
+             <div class="totalScore">0</div>
+           </div>
         </div>
+        
 
         <!-- Submit -->
 
         <div class="row">
          <div class="form-group">
            <button type="submit" class="btn btn-primary">New Game</button>
+           <button class="btn btn-primary calculate">3 best results</button>
          </div>
         </div>
+
+        
 
       </form>
     </div>
